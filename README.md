@@ -83,7 +83,9 @@ Goto AWS Cloudwatch and select the workgroup defined in the deployment flow. vie
 # Documentation
 
 
+# Architectural Diagram 
 
+![arch diagram](./images/arch.png)
 
 
 ### Design Decisions
