@@ -1,4 +1,8 @@
-# DevOps EC2 Deployment with Terraform and GitHub Actions
+# Complete DevOps Project in Deploying EC2C Infrastructure with Terraform and Nodejs Application Template
+
+Welcome to the Nodejs application deployed on Amazon Web Services (AWS) EC2. This document provides a detailed introduction and instruction to the deployment, highlighting the key components and technologies involved. This repository serves as a demo project for a complete end-to-end DevOps processes, ranging from infrastructure provisioning using terraform, unit test code, containerization, deploying the containerized image, logging and monitoring, showcasing how to use various DevOps technology to set up and run an automation using Github CI/CD pipeline. 
+
+![main page](./images/homepage.png)
 
 ## 1. Source Code
 
