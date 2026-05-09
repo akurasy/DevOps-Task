@@ -32,216 +32,59 @@ Before you begin, ensure you have the following prerequisites in place:
 3. **Terraform Installed**: This project relies on Terraform for infrastructure provisioning. Make sure you have Terraform installed on your Ubuntu machine. You can find installation instructions for Terraform on the [official Terraform website](https://www.terraform.io/downloads.html).
 
 
+# STEP1 (Infrastructure Provisioning)
+Before you begin this, a basic understanding of terraform is required. Look into the terraform script and change the variables to suite your deployment.
+Clone this repository and run aws configure in your server by running the command:
 
-## 1. Source Code
-
-This repository contains a simple Node.js application that displays:
-
-> Thank you Damolak for the DevOps task and the consideration.
-
-The application has:
-
-- `/` landing page
-- `/health` health check endpoint
-- Dockerfile
-- Basic Node.js test
-
-Application files are inside:
-
-```text
-app/
+```
+aws configure
+#use your iam secret key, access key and region to set up permission for your terraform server.
 ```
 
-Run locally:
-
-```bash
-cd app
-npm install
-npm test
-npm start
+```
+git clone https://github.com/akurasy/DevOps-Task.git
 ```
 
-Open:
+change directory to the terraform directory where all infrastructure code is kept.
 
-```text
-http://localhost:3000
 ```
-
-## 2. Infrastructure Code Terraform
-
-Terraform is intentionally kept simple.
-
-There is only one reusable module:
-
-```text
-terraform/modules/ec2_app
-```
-
-The root Terraform code simply references this module:
-
-```hcl
-module "ec2_app" {
-  source = "./modules/ec2_app"
-
-  aws_region        = var.aws_region
-  project_name      = var.project_name
-  instance_type     = var.instance_type
-  allowed_ssh_cidr  = var.allowed_ssh_cidr
-  allowed_http_cidr = var.allowed_http_cidr
-}
-```
-
-The module creates:
-
-- VPC
-- Public subnet
-- Internet gateway
-- Route table
-- Security group
-- Terraform-generated SSH key pair
-- EC2 instance
-- IAM role for CloudWatch logs
-- CloudWatch log group
-- CloudWatch alarms
-
-### SSH Key Pair
-
-Terraform creates the SSH key pair using:
-
-- `tls_private_key`
-- `aws_key_pair`
-- `local_sensitive_file`
-
-The public key is uploaded to AWS and attached to the EC2 instance.
-
-The private key is saved locally as:
-
-```text
-devops-ec2-task.pem
-```
-
-> Note: For production, avoid storing private keys in Terraform state. Use AWS Systems Manager Session Manager or external key management.
-
-### Deploy Infrastructure
-
-```bash
 cd terraform
+```
+
+# Update the terraform.tfvars to suit your infratsructrure region and other details
+
+run the following commands to provision your infrastructure 
+
+```
 terraform init
-terraform validate
-terraform plan -var="allowed_ssh_cidr=YOUR_PUBLIC_IP/32"
-terraform apply -var="allowed_ssh_cidr=YOUR_PUBLIC_IP/32"
+terraform plan
+terraform apply --auto-approve
 ```
 
-After deployment, Terraform prints:
+![terraform page](./images/terraform.png)
 
-- Application URL
-- EC2 public IP
-- Private key path
-- SSH command
-- CloudWatch log group
 
-## 3. CI/CD Pipeline
+# STEP2 (Application Deployment with Github Actions)
+1.  push the code to your git repository
+2.  update your repository secrets
+   ![Github Secret](./images/secrets.png)
 
-The GitHub Actions workflow is located here:
+3. commit your changes for workflow to trigger. For this project, the workflow is deployed to the main branch.
 
-```text
-.github/workflows/deploy.yml
-```
+   ![Github Workflow](./images/workflow.png)
 
-The pipeline performs:
 
-1. Checkout code
-2. Install Node.js dependencies
-3. Run tests
-4. Build Docker image
-5. Push image to GitHub Container Registry
-6. SSH into EC2
-7. Pull latest Docker image
-8. Stop old container
-9. Start new container
-10. Run health check
+# Step3 (Monitoring and Observability)
 
-### GitHub Secrets Required
+Goto AWS Cloudwatch and select the workgroup defined in the deployment flow. view the log insight to see the application logs. 
+![Monitoring](./images/cloudwatch.png)
 
-Create these secrets in your GitHub repository:
 
-```text
-AWS_REGION
-EC2_HOST
-EC2_USER
-EC2_SSH_PRIVATE_KEY
-```
-
-Recommended values:
-
-```text
-AWS_REGION=eu-west-2
-EC2_USER=ec2-user
-EC2_HOST=<terraform-output-instance-public-ip>
-EC2_SSH_PRIVATE_KEY=<content-of-devops-ec2-task.pem>
-```
-
-To get the private key content:
-
-```bash
-cat terraform/devops-ec2-task.pem
-```
-
-## 4. Observability
-
-This solution includes basic observability:
-
-- Application health endpoint: `/health`
-- Docker health check
-- CloudWatch Logs
-- CloudWatch EC2 status check alarm
-- CloudWatch high CPU alarm
-- Docker restart policy: `unless-stopped`
-
-CloudWatch log group:
-
-```text
-/ec2/devops-ec2-task/app
-```
-
-Useful commands on EC2:
-
-```bash
-docker ps
-docker logs devops-ec2-task-app
-curl http://localhost/health
-```
-
-## 5. Documentation
+# Documentation
 
 ### Architecture Diagram
 
-```mermaid
-flowchart LR
-    Dev[Developer] --> GitHub[GitHub Repository]
-    GitHub --> Actions[GitHub Actions]
-    Actions --> Test[Build and Test]
-    Test --> Registry[GitHub Container Registry]
-    Registry --> EC2[AWS EC2 Instance]
-    Terraform[Terraform Simple Module] --> EC2
-    Terraform --> VPC[VPC Public Subnet Security Group Key Pair IAM]
-    EC2 --> Docker[Docker Container]
-    Docker --> App[Node.js App]
-    App --> Browser[User Browser]
-    Docker --> Logs[Docker Logs]
-    Logs --> CloudWatch[CloudWatch Logs and Alarms]
 
-    classDef source fill:#e3f2fd,stroke:#1565c0,color:#0d47a1;
-    classDef cicd fill:#ede7f6,stroke:#512da8,color:#311b92;
-    classDef aws fill:#fff3e0,stroke:#ef6c00,color:#e65100;
-    classDef app fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20;
-    classDef obs fill:#fce4ec,stroke:#ad1457,color:#880e4f;
-
-    class Dev,GitHub source;
-    class Actions,Test,Registry cicd;
-    class Terraform,VPC,EC2 aws;
-    class Docker,App,Browser app;
-    class Logs,CloudWatch obs;
 ```
 
 ### Design Decisions
