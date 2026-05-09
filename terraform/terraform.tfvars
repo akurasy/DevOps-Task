@@ -1,0 +1,19 @@
+# Example variable overrides for Terraform deployment
+aws_region                    = "us-east-1"
+project_name                  = "devops-ec2-task"
+instance_type                 = "t3.micro"
+allowed_ssh_cidr              = "0.0.0.0/0"
+allowed_http_cidr             = "0.0.0.0/0"
+vpc_cidr_block                = "10.20.0.0/16"
+public_subnet_cidr            = "10.20.1.0/24"
+ami_name_filter               = "al2023-ami-*-x86_64"
+ami_owners                    = ["amazon"]
+key_algorithm                 = "RSA"
+key_rsa_bits                  = 4096
+http_port                     = 80
+ssh_port                      = 22
+log_group_retention_days      = 14
+status_check_evaluation_periods = 2
+cpu_alarm_evaluation_periods  = 3
+cpu_alarm_threshold           = 80
+alarm_period                  = 60

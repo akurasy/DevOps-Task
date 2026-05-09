@@ -1,0 +1,25 @@
+flowchart LR
+    Dev[Developer] --> GitHub[GitHub Repository]
+    GitHub --> Actions[GitHub Actions]
+    Actions --> Test[Build and Test]
+    Test --> Registry[GitHub Container Registry]
+    Registry --> EC2[AWS EC2 Instance]
+    Terraform[Terraform Simple Module] --> EC2
+    Terraform --> VPC[VPC Public Subnet Security Group Key Pair IAM]
+    EC2 --> Docker[Docker Container]
+    Docker --> App[Node.js App]
+    App --> Browser[User Browser]
+    Docker --> Logs[Docker Logs]
+    Logs --> CloudWatch[CloudWatch Logs and Alarms]
+
+    classDef source fill:#e3f2fd,stroke:#1565c0,color:#0d47a1;
+    classDef cicd fill:#ede7f6,stroke:#512da8,color:#311b92;
+    classDef aws fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef app fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20;
+    classDef obs fill:#fce4ec,stroke:#ad1457,color:#880e4f;
+
+    class Dev,GitHub source;
+    class Actions,Test,Registry cicd;
+    class Terraform,VPC,EC2 aws;
+    class Docker,App,Browser app;
+    class Logs,CloudWatch obs;
