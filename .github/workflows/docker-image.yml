@@ -80,10 +80,6 @@ jobs:
               --name $CONTAINER_NAME \
               --restart unless-stopped \
               -p 80:3000 \
-              --log-driver=awslogs \
-              --log-opt awslogs-region=$AWS_REGION \
-              --log-opt awslogs-group=$LOG_GROUP \
-              --log-opt awslogs-stream=$CONTAINER_NAME \
               $IMAGE_NAME:latest
 
             sleep 5
