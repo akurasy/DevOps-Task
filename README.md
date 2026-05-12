@@ -29,7 +29,7 @@ Before you begin, ensure you have the following prerequisites in place:
 
 2. **AWS CLI Installed and Access Keys Configured**: To interact with AWS services, you'll need the AWS Command Line Interface (CLI) installed on your machine. Additionally, configure your AWS access keys to authenticate with AWS. You can set up access keys using the `aws configure` command.
 
-3. **Terraform Installed**: This project relies on Terraform for infrastructure provisioning. Make sure you have Terraform installed on your Ubuntu machine. You can find installation instructions for Terraform on the [official Terraform website](https://www.terraform.io/downloads.html).
+3. **Terraform Installed**: This project relies on Terraform for infrastructure provisioning. Make sure you have Terraform installed on your linux machine. You can find installation instructions for Terraform on the [official Terraform website](https://www.terraform.io/downloads.html).
 
 
 # STEP1 (Infrastructure Provisioning)
