@@ -25,7 +25,7 @@ The deployment consist of the following components
 
 Before you begin, ensure you have the following prerequisites in place:
 
-1. **Ubuntu/Amazon Linux Machine**: This Deployment is designed to run on an Ubuntu Linux machine. Ensure you have an Ubuntu-based system available.
+1. **Ubuntu/Amazon Linux Machine**: This Deployment is designed to run on a Linux machine. Ensure you have a Linux system available.
 
 2. **AWS CLI Installed and Access Keys Configured**: To interact with AWS services, you'll need the AWS Command Line Interface (CLI) installed on your machine. Additionally, configure your AWS access keys to authenticate with AWS. You can set up access keys using the `aws configure` command.
 
